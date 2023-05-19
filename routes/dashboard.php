@@ -7,4 +7,4 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/lolo',DashboardController::class,'index');
+Route::get('/dashboard',[DashboardController::class,'index']);
