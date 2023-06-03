@@ -19,6 +19,6 @@
     ]) }}
      id="" class="form-check-input">
 </div>
-<label for="" class="form-check-label"> {{ $text }}</label>
+<label for="" class="form-check-label px-4"> {{ $text }}</label>
 @endforeach
 <x-form.validation-feedback :name="$name" />

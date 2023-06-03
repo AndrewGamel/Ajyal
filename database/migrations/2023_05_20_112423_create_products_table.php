@@ -17,8 +17,8 @@ return new class extends Migration
             nullable()->constrained('categories')->nullOnDelete();
             $table->foreignId('store_id')->
             nullable()->constrained('stores')->nullOnDelete();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable()->unique();
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->float('price')->default(0);

@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
@@ -14,8 +18,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+
         $categories = Category::all();
-        return view('dashboard.categories.index',compact('categories'));
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     /**
@@ -25,7 +30,7 @@ class CategoriesController extends Controller
     {
         $parents = Category::all();
         $category = new Category();
-        return view('dashboard.categories.create',compact('category', 'parents'));
+        return view('dashboard.categories.create', compact('category', 'parents'));
     }
 
     /**
@@ -33,10 +38,17 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-    $data = $request->except('image');
-        Category::create($data);
+        //dd($request);
+        $request->merge([
+            'slug' => Str::slug($request->post('name')),
+        ]);
+
+        $data = $request->except('image');
+        $data['image'] = $this->uploadImage($request);
+
+        $category = Category::create($data);
         return Redirect::route('dashboard.categories.index')
-            ->with('success', 'Category created!');
+            ->with('success', 'Category Created!');
     }
 
     /**
@@ -45,7 +57,7 @@ class CategoriesController extends Controller
     public function show(Category $category)
     {
         return view('dashboard.categories.show', [
-            'category' => $category
+            'category' => $category,
         ]);
     }
 
@@ -54,15 +66,50 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id);
+        } catch (\Throwable $th) {
+            return Redirect::route('dashboard.categories.index')
+                ->with('info', 'Category Not Found!');
+        }
+
+        // SELECT * FROM categories WHERE id <> $id
+        // AND (parent_id IS NULL OR parent_id <> $id)
+        $parents = Category::where('id', '<>', $id)
+            ->where(function ($query) use ($id) {
+                $query->whereNull('parent_id')
+                    ->orWhere('parent_id', '<>', $id);
+            })
+            ->get();
+        return view('dashboard.categories.edit', compact('category', 'parents'));
     }
 
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $old_image = $category->image;
+
+        $data = $request->except('image');
+
+        $new_image = $this->uploadImage($request);
+        if ($new_image) {
+            $data['image'] = $new_image;
+        }
+
+        $category->update($data);
+
+        if ($old_image && isset($new_image)) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+
+        return Redirect::route('dashboard.categories.index')
+            ->with('success', 'Category Updated!');
     }
 
     /**
@@ -70,9 +117,31 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
 
+        $category->delete();
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
+        $this->reAutoIncrement('categories');
         return Redirect::route('dashboard.categories.index')
-        ->with('success', 'Category deleted!');
+            ->with('success', 'Category Deleted!');
     }
+
+    public function reAutoIncrement($table)
+    {
+        DB::statement("SET @count = 0;");
+        DB::statement("UPDATE `$table` SET `$table`.`id` = @count:= @count + 1;");
+        DB::statement(("ALTER TABLE `$table` AUTO_INCREMENT = 1;"));
+    }
+
+    public function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+        $file = $request->file('image');
+        $path = $file->store('uploads',['disk' => 'public']);
+        return $path;
+    }
+
 }

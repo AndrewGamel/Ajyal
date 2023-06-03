@@ -4,9 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ config('app.name') }}</title>
-
-
-  @stack('styles')
+  <!-- Google Font: Source Sans Pro -->
+  {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> --}}
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ asset('assets/dashboard/plugins/fontawesome-free/css/all.min.css') }} ">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{ asset('assets/dashboard/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ asset('assets/dashboard/dist/css/adminlte.min.css') }}">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed') }}">
 <div class="wrapper">
@@ -27,12 +32,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard v2</h1>
+            <h1 class="m-0">@yield('title','page_title')</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v2</li>
+              <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Home</a></li>
+              @yield('breadcrumb')
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -44,10 +49,8 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Info boxes -->
-        <div class="row">
 
-
-{{ $slot }}
+            {{ $slot }}
         <!-- /.row -->
 
 
@@ -72,7 +75,29 @@
   </footer>
 </div>
 <!-- ./wrapper -->
-@stack('script')
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{{ asset('assets/dashboard/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{ asset('assets/dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ asset('assets/dashboard/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('assets/dashboard/dist/js/adminlte.min.js') }}"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+{{-- <script src="{{ asset('assets/dashboard/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+<script src="{{ asset('assets/dashboard/plugins/raphael/raphael.min.js') }}"></script>
+<script src="{{ asset('assets/dashboard/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
+<script src="{{ asset('assets/dashboard/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script> --}}
+<!-- ChartJS -->
+{{-- <script src="{{ asset('assets/dashboard/plugins/chart.js/Chart.min.js') }}"></script> --}}
+
+<!-- AdminLTE for demo purposes -->
+{{-- <script src="{{ asset('assets/dashboard/dist/js/demo.js') }}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{{ asset('assets/dashboard/dist/js/pages/dashboard2.js') }}"></script> --}}
 
 </body>
 </html>

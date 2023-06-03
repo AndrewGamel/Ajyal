@@ -1,10 +1,11 @@
 
-@include('layouts.partials.main-files')
-
 @section('category','Category Items')
-
+@section('nav-item-1','')
+@section('nav-item-2','')
+@section('nav-item-3','')
 <x-dashboard-layout>
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box">
           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
@@ -66,4 +67,6 @@
     </div>
       <!-- fix for small devices only -->
       <div class="clearfix hidden-md-up"></div>
+    </div>
+
 </x-dashboard-layout>

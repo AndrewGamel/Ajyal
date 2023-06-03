@@ -1,8 +1,10 @@
+
+
 <div class="form-group">
     <x-form.input label="Category Name" class="form-control-lg" role="input" name="name" :value="$category->name" />
 </div>
 
-<div class="form-group">
+<div class="form-group ">
     <label for="">Category Parent</label>
     <select name="parent_id" class="form-control form-select">
         <option value="">Primary Category</option>
@@ -13,15 +15,25 @@
 </div>
 
 <div class="form-group">
+    <x-form.label id="image">Image</x-form.label>
+    <x-form.input type="file" class="form-control" name="image" accept="image/*" />
+    @if ($category->image)
+    <img src="{{ asset('storage/' . $category->image) }}" alt="" height="60">
+    @endif
+</div>
+
+<div class="form-group">
     <label for="">Description</label>
     <x-form.textarea name="description" :value="$category->description" />
 </div>
-<div class="form-group">
+
+<div class="form-group ">
     <label for="">Status</label>
-    <div>
-        <x-form.radio name="status" :checked="$category->status" :options="['active' => 'Active', 'archived' => 'Archived']" />
+    <div class="">
+        <x-form.radio name="status"  :checked="$category->status" :options="['active' => 'Active', 'archived' => 'Archived']" />
     </div>
 </div>
-<div class="form-group">
+
+<div class="form-group ">
     <button type="submit" class="btn btn-primary">{{ $button_label ?? 'Save' }}</button>
 </div>
