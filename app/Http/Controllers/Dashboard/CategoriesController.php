@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -38,6 +39,11 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        $request->validate(Category::rules(),[
+            'name.unique' => 'this name already Found !'
+        ]);
         //dd($request);
         $request->merge([
             'slug' => Str::slug($request->post('name')),
@@ -88,8 +94,13 @@ class CategoriesController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, string $id)
     {
+        /*
+        Don't Need To Define Validation it Define in CategoryRequest
+            $request->validate(Category::rules($id));
+        */
+
         $category = Category::findOrFail($id);
 
         $old_image = $category->image;
