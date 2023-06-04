@@ -38,10 +38,13 @@
                         <tr><td colspan="7"> <h2 class="text-center">Category is Empty</h2></td>  </tr>
                 @endif
 
-                @foreach ($categories as $category)
+                @foreach ($categories as $i => $category)
+
+
+
 
                     <tr>
-                        <td>{{ $category->id }}</td>
+                        <td>{{ $i+1  }}|{{ $category->id }}</td>
                         <td>
                             <img src="{{ asset('storage/' . $category->image) }}" alt="" height="60">
                         </td>
