@@ -1,12 +1,13 @@
 @section('title', 'Categories')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Categories</li>
+    <li class="breadcrumb-item active">
+        Categories</li>
 @endsection
 
-@section('nav-item-1', 'active')
+{{-- @section('nav-item-1', 'active')
 @section('nav-item-2', '')
-@section('nav-item-3', '')
+@section('nav-item-3', '') --}}
 
 <x-dashboard-layout>
     <div class="mb-5">
@@ -17,16 +18,23 @@
     <x-alert type="success" />
     <x-alert type="info" />
 
+    <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
+        <x-form.label />
+        <x-form.input id="search" class="p-1 mx-2" placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
+        <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
+        {{-- <  :selected="$category->parent_id" /> --}}
+        <input type="submit" class=" btn btn-outline-light ml-2" value="Filter">
+    </form>
+<div id="search_list"></div>
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th colspan="1">No | ID | Parent ID </th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Slug</th>
-                    {{-- <th>Description</th> --}}
-                    <th>Parent ID</th>
+                    <th>Status</th>
                     <th>Created At</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -35,16 +43,21 @@
             </thead>
             <tbody>
                 @if (count($categories) == 0)
-                        <tr><td colspan="7"> <h2 class="text-center">Category is Empty</h2></td>  </tr>
+                    <tr>
+                        <td colspan="7">
+                            <h2 class="text-center">Category is Empty</h2>
+                        </td>
+                    </tr>
                 @endif
 
                 @foreach ($categories as $i => $category)
-
-
-
-
                     <tr>
-                        <td>{{ $i+1  }}|{{ $category->id }}</td>
+                        <td>{{ $i + 1 }} |
+                            <p class="badge badge-danger text-bold ml-1"> {{ $category->id }}</p> |
+                            <p class="badge badge-info text-bold ml-1">{{ $category->parent_id ?? 'Null' }}</p>
+                        </td>
+
+
                         <td>
                             <img src="{{ asset('storage/' . $category->image) }}" alt="" height="60">
                         </td>
@@ -52,7 +65,13 @@
                                 href="{{ route('dashboard.categories.show', ['category' => $category->id]) }}">{{ $category->name }}</a>
                         </td>
                         <td>{{ $category->slug }}</td>
-                        <td>{{ $category->parent_id ?? 'Null' }}</td>
+                        <td>
+                            @if ($category->status == 'active')
+                                <p class="badge badge-success text-bold ml-1"> Active </p>
+                            @else
+                                <p class="badge badge-danger text-bold ml-1"> Archived </p>
+                            @endif
+                        </td>
                         <td>{{ $category->created_at }}</td>
                         <td><a href="{{ route('dashboard.categories.edit', [$category->id]) }}"
                                 class="btn btn-outline-dark">Edit</a></td>
@@ -64,12 +83,27 @@
                             </form>
                         </td>
                     </tr>
-
                 @endforeach
 
 
 
             </tbody>
         </table>
-    </div>
+        {{ $categories->withQueryString()->links() }}
+    </div><script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var query = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "dashboard.categories.index",
+                data: {'name': query },
+                success: function(data) {
+                    $('#search_list').html(data);
+                }
+            });
+        });
+    });
+</script>
+
 </x-dashboard-layout>

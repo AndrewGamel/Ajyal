@@ -1,5 +1,5 @@
 @props([
-     'type' => '', 'name', 'value' => '', 'label' => false
+     'type' => '', 'name'=>'', 'value' => '', 'label' => false
 ])
 
 @if ($label)

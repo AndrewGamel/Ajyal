@@ -19,9 +19,9 @@ class Filter implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(!($value == array_map(null,$this->not_allowed_words))){
-            $fail('The '. $value.' is forbidden please Change it !');
-        }
+        // if(!($value == array_map(null,$this->not_allowed_words))){
+        //     $fail('The '. $value.' is forbidden please Change it !');
+        // }
 
     }
 
