@@ -98,6 +98,33 @@
 {{-- <script src="{{ asset('assets/dashboard/dist/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('assets/dashboard/dist/js/pages/dashboard2.js') }}"></script> --}}
+<script>
+     $(document).ready(function(){
+    $('#search').on('keyup',function (e) {
+        var $query = $(this).val();
 
+        if ($query === "") {
+            $('.search_data').hide();
+        }
+        else if($query){
+             $('.all_data').hide();
+            $('.search_data').show();
+        }
+        else{
+            $('.all_data').show();
+            $('.search_data').hide();
+        }
+        $.ajax({
+            type: "get",
+            url: "{{ URL::to('admin/dashboard/search') }}",
+            data: {'search': $query},
+            success: function (data) {
+                $('#search_list').html(data);
+                console.log(data);
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

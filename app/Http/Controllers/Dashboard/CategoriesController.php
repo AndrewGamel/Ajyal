@@ -20,21 +20,15 @@ class CategoriesController extends Controller
     public function index(Request $request)
     {
 
-        // if ($request->ajax()) {
 
-        //     $data =
-        // }
 
-        $query = Category::query();
+        // $query = Category::query();
 
-       if ($name = $request->query('name')) {
-        $query->where('name','LIKE',"%{$name}%");
-       }
-       if ($status = $request->query('status')) {
-        $query->where('status','=',$status);
-       }
 
-        $categories = $query->paginate(2);
+
+        //$categories = $query->paginate(2);
+        $categories = Category::filter($request->query())->orderBy('name')
+        ->paginate();
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -55,7 +49,7 @@ class CategoriesController extends Controller
     {
 
 
-        $request->validate(Category::rules(),[
+        $request->validate(Category::rules(), [
             'name.unique' => 'this name already Found !'
         ]);
         //dd($request);
@@ -165,8 +159,39 @@ class CategoriesController extends Controller
             return;
         }
         $file = $request->file('image');
-        $path = $file->store('uploads',['disk' => 'public']);
+        $path = $file->store('uploads', ['disk' => 'public']);
         return $path;
     }
+    function search(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $data = Category::where('id', 'like',$request->search)->orWhere('name', 'like', '%' . $request->search . '%')->paginate();
+
+            $output = '';
+            if (count($data) > 0) {
+
+                foreach ($data as $i => $row) {
+                    $output .= '
+                          <tr>
+                           <td>'. $i + 1 .' |
+                                    <p class="badge badge-danger text-bold ml-1"> ' . $row->id . '</p> |
+                            </td>
+
+
+                            <td><a href="' . route('dashboard.categories.show', ['category' => $row->id]) . '">' . $row->name . '</a></td>
+
+                            </tr>
+                        ';
+                }
+                $output .= '
+
+
+            </div>';
+            } else { $output .= 'no Result'; }
+            return $output;
+        }
+    }
+
 
 }

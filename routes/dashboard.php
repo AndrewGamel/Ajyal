@@ -19,4 +19,5 @@ Route::group([
     //Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/',[DashboardController::class,'index'])->name('dashboard');
     Route::resource('/categories',CategoriesController::class)->names(['index'=>'categories.index']);
+    Route::get('/search',[CategoriesController::class,'search'])->name('search');
 });

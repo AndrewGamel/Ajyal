@@ -10,9 +10,8 @@
 @section('nav-item-3', '') --}}
 
 <x-dashboard-layout>
-    <div class="mb-5">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
-    </div>
+
+        <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'" class="form-control col-2 mb-3"  >
 
 
     <x-alert type="success" />
@@ -20,12 +19,17 @@
 
     <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
         <x-form.label />
-        <x-form.input id="search" class="p-1 mx-2" placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
+        <x-form.input  onfocus="this.value=''" class="p-1 mx-2" placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
         <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
         {{-- <  :selected="$category->parent_id" /> --}}
         <input type="submit" class=" btn btn-outline-light ml-2" value="Filter">
     </form>
-<div id="search_list"></div>
+
+ <div class="mb-5">
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
+    </div>
+
+
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -41,7 +45,7 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="all_data">
                 @if (count($categories) == 0)
                     <tr>
                         <td colspan="7">
@@ -88,22 +92,12 @@
 
 
             </tbody>
+            <tbody class="search_data" id="search_list">
+
+            </tbody>
         </table>
         {{ $categories->withQueryString()->links() }}
-    </div><script>
-    $(document).ready(function() {
-        $('#search').on('keyup', function() {
-            var query = $(this).val();
-            $.ajax({
-                type: "GET",
-                url: "dashboard.categories.index",
-                data: {'name': query },
-                success: function(data) {
-                    $('#search_list').html(data);
-                }
-            });
-        });
-    });
-</script>
+    </div>
+
 
 </x-dashboard-layout>
