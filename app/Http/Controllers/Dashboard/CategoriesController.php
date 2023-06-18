@@ -21,15 +21,11 @@ class CategoriesController extends Controller
     {
 
         /*
-// SELECT a.*, b.name as parent_name
-        // FROM categories as a
-        // LEFT JOIN categories as b ON b.id = a.parent_id
-
-*/
-
-        // $query = Category::query();
-
-
+         SELECT a.*, b.name as parent_name
+         FROM categories as a
+         LEFT JOIN categories as b ON b.id = a.parent_id
+         // $query = Category::query();
+        */
 
         //$categories = $query->paginate(2);
         $categories = Category::leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
@@ -207,5 +203,23 @@ class CategoriesController extends Controller
             }
             return $output;
         }
+    }
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->paginate();
+        return view('dashboard.categories.trash',compact('categories'));
+    }
+    public function restore(Request $request,$id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+        return redirect()->route('dashboard.categories.trash')->with('success', 'Category Restored!');
+    }
+    public function forceDelete($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->forceDelete();
+        return redirect()->route('dashboard.categories.trash')->with('danger', 'Category Deleted For Ever!');
     }
 }
