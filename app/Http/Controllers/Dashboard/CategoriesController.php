@@ -20,15 +20,29 @@ class CategoriesController extends Controller
     public function index(Request $request)
     {
 
+        /*
+// SELECT a.*, b.name as parent_name
+        // FROM categories as a
+        // LEFT JOIN categories as b ON b.id = a.parent_id
 
+*/
 
         // $query = Category::query();
 
 
 
         //$categories = $query->paginate(2);
-        $categories = Category::filter($request->query())->orderBy('name')
-        ->paginate();
+        $categories = Category::leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+            ->select([
+                'categories.*',
+                'parents.name as parent_name'
+            ])
+            ->filter($request->query())
+            ->orderBy('categories.name')
+            // ->onlyTrashed()
+            //->withTrashed()
+            ->paginate();
+
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -141,7 +155,7 @@ class CategoriesController extends Controller
         if ($category->image) {
             Storage::disk('public')->delete($category->image);
         }
-        $this->reAutoIncrement('categories');
+      //  $this->reAutoIncrement('categories');
         return Redirect::route('dashboard.categories.index')
             ->with('success', 'Category Deleted!');
     }
@@ -166,7 +180,7 @@ class CategoriesController extends Controller
     {
         if ($request->ajax()) {
 
-            $data = Category::where('id', 'like',$request->search)->orWhere('name', 'like', '%' . $request->search . '%')->paginate();
+            $data = Category::where('id', 'like', $request->search)->orWhere('name', 'like', '%' . $request->search . '%')->paginate();
 
             $output = '';
             if (count($data) > 0) {
@@ -174,7 +188,7 @@ class CategoriesController extends Controller
                 foreach ($data as $i => $row) {
                     $output .= '
                           <tr>
-                           <td>'. $i + 1 .' |
+                           <td>' . $i + 1 . ' |
                                     <p class="badge badge-danger text-bold ml-1"> ' . $row->id . '</p> |
                             </td>
 
@@ -188,10 +202,10 @@ class CategoriesController extends Controller
 
 
             </div>';
-            } else { $output .= 'no Result'; }
+            } else {
+                $output .= 'no Result';
+            }
             return $output;
         }
     }
-
-
 }

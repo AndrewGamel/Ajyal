@@ -58,7 +58,7 @@
                     <tr>
                         <td>{{ $i + 1 }} |
                             <p class="badge badge-danger text-bold ml-1"> {{ $category->id }}</p> |
-                            <p class="badge badge-info text-bold ml-1">{{ $category->parent_id ?? 'Null' }}</p>
+                            <p class="badge badge-info text-bold ml-1">{{ $category->parent_name ?? 'Null' }}</p>
                         </td>
 
 
