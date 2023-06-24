@@ -11,23 +11,23 @@
 
 <x-dashboard-layout>
 
-        <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'" class="form-control col-2 mb-3"  >
-
-
-    <x-alert type="success" />
-    <x-alert type="info" />
+    <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'" class="form-control col-2 mb-3 mx-1"  >
 
     <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
         <x-form.label />
-        <x-form.input  onfocus="this.value=''" class="p-1 mx-2" placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
+        <x-form.input  onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
         <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
         {{-- <  :selected="$category->parent_id" /> --}}
         <input type="submit" class=" btn btn-outline-light ml-2" value="Filter">
     </form>
 
  <div class="mb-5">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2">Create</a>
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-address-book mr-2"></i>Create</a>
+        <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
     </div>
+
+    <x-alert type="success" />
+    <x-alert type="info" />
 
 
     <div class="table-responsive">

@@ -148,9 +148,7 @@ class CategoriesController extends Controller
     {
 
         $category->delete();
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
-        }
+
       //  $this->reAutoIncrement('categories');
         return Redirect::route('dashboard.categories.index')
             ->with('success', 'Category Deleted!');
@@ -205,9 +203,9 @@ class CategoriesController extends Controller
         }
     }
 
-    public function trash()
+    public function trash(Request $request)
     {
-        $categories = Category::onlyTrashed()->paginate();
+        $categories = Category::onlyTrashed()->filter($request->query())->orderBy('categories.name')->paginate();
         return view('dashboard.categories.trash',compact('categories'));
     }
     public function restore(Request $request,$id)
@@ -220,6 +218,9 @@ class CategoriesController extends Controller
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->forceDelete();
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
         return redirect()->route('dashboard.categories.trash')->with('danger', 'Category Deleted For Ever!');
     }
 }

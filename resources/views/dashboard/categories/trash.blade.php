@@ -1,7 +1,7 @@
 @section('title', 'Categories')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}" class="mr-2"> Categories</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}" class=""> Categories</a></li>
     <li class="breadcrumb-item "> Trash</li>
 @endsection
 
@@ -72,11 +72,15 @@
                                 <p class="badge badge-danger text-bold ml-1"> Archived </p>
                             @endif
                         </td>
-                        <td>{{ $category->created_at }}</td>
-                        <td><a href="{{ route('dashboard.categories.edit', [$category->id]) }}"
-                                class="btn btn-outline-dark">Edit</a></td>
+                        <td>{{ $category->deleted_at }}</td>
                         <td>
-                            <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post">
+                            <form action="{{ route('dashboard.categories.restore', $category->id) }}" method="post">
+                            @csrf
+                            @method('put')
+                            <button class="btn btn-outline-warning">Restore</button>
+                        </form>
+                        <td>
+                            <form action="{{ route('dashboard.categories.force-delete', $category->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-outline-danger">Delete</button>
