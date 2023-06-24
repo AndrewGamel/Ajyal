@@ -22,7 +22,7 @@
     </form>
 
  <div class="mb-5">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-address-book mr-2"></i>Create</a>
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-plus mr-2"></i>Create</a>
         <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
     </div>
 
@@ -42,19 +42,18 @@
                     <th>Created At</th>
                     <th>Edit</th>
                     <th>Delete</th>
-
                 </tr>
             </thead>
             <tbody class="all_data">
-                @if (count($categories) == 0)
+                {{-- @if (count($categories) == 0)
                     <tr>
                         <td colspan="7">
                             <h2 class="text-center">Category is Empty</h2>
                         </td>
                     </tr>
-                @endif
-
-                @foreach ($categories as $i => $category)
+                @endif --}}
+                @forelse ($categories as $i => $category)
+                {{-- @foreach ($categories as $i => $category) --}}
                     <tr>
                         <td>{{ $i + 1 }} |
                             <p class="badge badge-danger text-bold ml-1"> {{ $category->id }}</p> |
@@ -87,7 +86,13 @@
                             </form>
                         </td>
                     </tr>
-                @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="7">
+                            <h2 class="text-center">Category is Empty</h2>
+                        </td>
+                    </tr>
+                    @endforelse
 
 
 
