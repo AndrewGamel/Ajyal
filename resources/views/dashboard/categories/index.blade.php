@@ -18,7 +18,8 @@
         <x-form.input  onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
         <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
         {{-- <  :selected="$category->parent_id" /> --}}
-        <input type="submit" class=" btn btn-outline-light ml-2" value="Filter">
+
+       <input type="submit" class="btn btn-outline-light ml-2" value="Filter">
     </form>
 
  <div class="mb-5">
@@ -45,13 +46,7 @@
                 </tr>
             </thead>
             <tbody class="all_data">
-                {{-- @if (count($categories) == 0)
-                    <tr>
-                        <td colspan="7">
-                            <h2 class="text-center">Category is Empty</h2>
-                        </td>
-                    </tr>
-                @endif --}}
+  
                 @forelse ($categories as $i => $category)
                 {{-- @foreach ($categories as $i => $category) --}}
                     <tr>
