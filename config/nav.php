@@ -16,6 +16,13 @@ return [
     'title' => 'Categories',
     'active' => 'dashboard.categories.*',
     'badge' => 'new'
+],
+[
+    'icon' => 'fas fa-tags nav-icon',
+    'route' => 'dashboard.products.index',
+    'title' => 'products',
+    'active' => 'dashboard.products.*',
+    'badge' => ''
 ]
 
 
