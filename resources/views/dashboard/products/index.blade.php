@@ -1,8 +1,8 @@
-@section('title', 'Categories')
+@section('title', 'products')
 @section('breadcrumb')
     @parent
     <li class="breadcrumb-item active">
-        Categories</li>
+        products</li>
 @endsection
 
 {{-- @section('nav-item-1', 'active')
@@ -23,8 +23,8 @@
     </form>
 
  <div class="mb-5">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-plus mr-2"></i>Create</a>
-        <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
+        <a href="{{ route('dashboard.products.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-plus mr-2"></i>Create</a>
+        <a href="{{ route('dashboard.products.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
     </div>
 
     <x-alert type="success" />
@@ -38,43 +38,36 @@
                     <th colspan="1">No | ID | Parent ID </th>
                     <th>Image</th>
                     <th>Name</th>
-                    <th>Slug</th>
-                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Store</th>
                     <th>Created At</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
-           {{-- <tbody class="all_data">
-  @foreach ($categories as $i => $category) --}}
-                {{-- @forelse ($categories as $i => $category)
+           <tbody class="all_data">
+  {{-- @foreach ($categories as $i => $category)  --}}
+                 @forelse ($products as $i => $product)
 
                     <tr>
                         <td>{{ $i + 1 }} |
-                            <p class="badge badge-danger text-bold ml-1"> {{ $category->id }}</p> |
-                            <p class="badge badge-info text-bold ml-1">{{ $category->parent_name ?? 'Null' }}</p>
+                            <p class="badge badge-danger text-bold ml-1"> {{ $product->id }}</p> |
                         </td>
-
-
                         <td>
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="" height="60">
+                            <img src="{{ $product->image }}" alt="" height="60">
                         </td>
                         <td><a
-                                href="{{ route('dashboard.categories.show', ['category' => $category->id]) }}">{{ $category->name }}</a>
+                                href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
                         </td>
-                        <td>{{ $category->slug }}</td>
+                        <td>{{ $product->category_id }}</td>
                         <td>
-                            @if ($category->status == 'active')
-                                <p class="badge badge-success text-bold ml-1"> Active </p>
-                            @else
-                                <p class="badge badge-danger text-bold ml-1"> Archived </p>
-                            @endif
+
                         </td>
-                        <td>{{ $category->created_at }}</td>
-                        <td><a href="{{ route('dashboard.categories.edit', [$category->id]) }}"
+                        <td>{{ $product->created_at }}</td>
+                        <td><a href="{{ route('dashboard.products.edit', [$product->id]) }}"
                                 class="btn btn-outline-dark">Edit</a></td>
                         <td>
-                            <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post">
+                            <form action="{{ route('dashboard.products.destroy', $product->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="btn btn-outline-danger">Delete</button>
@@ -84,7 +77,7 @@
                     @empty
                     <tr>
                         <td colspan="7">
-                            <h2 class="text-center">Category is Empty</h2>
+                            <h2 class="text-center">product is Empty</h2>
                         </td>
                     </tr>
                     @endforelse
@@ -95,8 +88,8 @@
             <tbody class="search_data" id="search_list">
 
             </tbody>
-        </table>--}}
-        {{-- {{ $categories->withQueryString()->links() }}--}}
+        </table>
+         {{ $products->withQueryString()->links() }}
     </div>
 
 

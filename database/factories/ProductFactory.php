@@ -18,12 +18,14 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->words(5,true);
+        //$name = $this->faker->words(5,true);
+        $name = $this->faker->productName;
         return [
             'name'=> $name,
             'slug' => Str::slug($name),
             'description' => $this->faker->sentence(15),
-            'image' => $this->faker->imageUrl(),
+            // 'image' => $this->faker->imageUrl(),
+            'image' => $this->faker->avatar('foo', '300x300', 'jpg','set'.rand(1,5),'bg'.rand(1,6)),
             'price' => $this->faker->randomFloat(1,1,499),
             'compare_price' => $this->faker->randomFloat(1,500,999),
             'featured'=> rand(0,1),
