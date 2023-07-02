@@ -11,20 +11,24 @@
 
 <x-dashboard-layout>
 
-    <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'" class="form-control col-2 mb-3 mx-1"  >
+    <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'"
+        class="form-control col-2 mb-3 mx-1">
 
     <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
         <x-form.label />
-        <x-form.input  onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
+        <x-form.input onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name'
+            role="input" :value="request('name')" />
         <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
         {{-- <  :selected="$category->parent_id" /> --}}
 
-       <input type="submit" class="btn btn-outline-light ml-2" value="Filter">
+        <input type="submit" class="btn btn-outline-light ml-2" value="Filter">
     </form>
 
- <div class="mb-5">
-        <a href="{{ route('dashboard.products.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-plus mr-2"></i>Create</a>
-        <a href="{{ route('dashboard.products.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
+    <div class="mb-5">
+        <a href="{{ route('dashboard.products.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i
+                class="fas fa-plus mr-2"></i>Create</a>
+        <a href="{{ route('dashboard.products.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i
+                class="fas fa-trash mr-2"></i>trash</a>
     </div>
 
     <x-alert type="success" />
@@ -35,20 +39,20 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th colspan="1">No | ID | Parent ID </th>
+                    <th colspan="1">No | ID </th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Store</th>
+                    @if (Auth::user()->id == 1)
+                        <th>Store</th>
+                    @endif
                     <th>Created At</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
-           <tbody class="all_data">
-  {{-- @foreach ($categories as $i => $category)  --}}
-                 @forelse ($products as $i => $product)
-
+            <tbody class="all_data">
+                @forelse ($products as $i => $product)
                     <tr>
                         <td>{{ $i + 1 }} |
                             <p class="badge badge-danger text-bold ml-1"> {{ $product->id }}</p> |
@@ -59,11 +63,13 @@
                         <td><a
                                 href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
                         </td>
-                        <td>{{ $product->category_id }}</td>
-                        <td>
+                        <td>{{ $product->category->name ?? null }}</td>
 
-                        </td>
-                        <td>{{ $product->created_at }}</td>
+                        @if (Auth::user()->id == 1)
+                            <td>{{ $product->store->id ?? '' }}</td>
+                        @endif
+
+                        <td>{{ $product->created_at->diffForHumans() }}</td>
                         <td><a href="{{ route('dashboard.products.edit', [$product->id]) }}"
                                 class="btn btn-outline-dark">Edit</a></td>
                         <td>
@@ -74,13 +80,13 @@
                             </form>
                         </td>
                     </tr>
-                    @empty
+                @empty
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             <h2 class="text-center">product is Empty</h2>
                         </td>
                     </tr>
-                    @endforelse
+                @endforelse
 
 
 
@@ -89,7 +95,7 @@
 
             </tbody>
         </table>
-         {{ $products->withQueryString()->links() }}
+        {{ $products->withQueryString()->links() }}
     </div>
 
 

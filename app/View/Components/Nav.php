@@ -2,10 +2,12 @@
 
 namespace App\View\Components;
 
+use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Component;
+
 
 class Nav extends Component
 {
@@ -18,7 +20,6 @@ class Nav extends Component
     {
         $this->items = config('nav');
         $this->active =Route::currentRouteName();
-        //
     }
 
     /**

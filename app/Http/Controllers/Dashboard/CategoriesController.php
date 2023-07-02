@@ -28,11 +28,19 @@ class CategoriesController extends Controller
         */
 
         //$categories = $query->paginate(2);
-        $categories = Category::leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+        $categories = Category::with('parent')
+        /*leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
             ->select([
                 'categories.*',
                 'parents.name as parent_name'
             ])
+            ->select('categories.*')
+            //->selectRaw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count')
+            ->addSelect(DB::raw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count'))
+            */->withCount(['products as products_count'=> function ($query)
+            {
+               //$query->where('status','active');
+            }])
             ->filter($request->query())
             ->orderBy('categories.name')
             // ->onlyTrashed()

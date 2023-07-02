@@ -15,7 +15,7 @@ return [
     'route' => 'dashboard.categories.index',
     'title' => 'Categories',
     'active' => 'dashboard.categories.*',
-    'badge' => ''
+    'badge' =>  '',
 ],
 [
     'icon' => 'fas fa-tags nav-icon',

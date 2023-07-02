@@ -11,20 +11,24 @@
 
 <x-dashboard-layout>
 
-    <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'" class="form-control col-2 mb-3 mx-1"  >
+    <input type="search" name="search" id="search" placeholder="Enter ID 'Live Search'"
+        class="form-control col-2 mb-3 mx-1">
 
     <form action="{{ URL::current() }}" method="get" class="d-flex justify-content-between mb-4">
         <x-form.label />
-        <x-form.input  onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name' role="input" :value="request('name')" />
+        <x-form.input onfocus="this.value=''" class="p-1 " placeholder="Enter Name" type="text" name='name'
+            role="input" :value="request('name')" />
         <x-form.select name='status' class="mx-2" selected_value='All' :options="['active' => 'Active', 'archived' => 'Archived']" :selected="request('status')" />
         {{-- <  :selected="$category->parent_id" /> --}}
 
-       <input type="submit" class="btn btn-outline-light ml-2" value="Filter">
+        <input type="submit" class="btn btn-outline-light ml-2" value="Filter">
     </form>
 
- <div class="mb-5">
-        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-plus mr-2"></i>Create</a>
-        <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i class="fas fa-trash mr-2"></i>trash</a>
+    <div class="mb-5">
+        <a href="{{ route('dashboard.categories.create') }}" class="btn btn-sm btn-outline-primary mr-2"><i
+                class="fas fa-plus mr-2"></i>Create</a>
+        <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-sm btn-outline-warning mr-2"><i
+                class="fas fa-trash mr-2"></i>trash</a>
     </div>
 
     <x-alert type="success" />
@@ -36,9 +40,10 @@
             <thead>
                 <tr>
                     <th colspan="1">No | ID | Parent ID </th>
-                    <th>Image</th>
+                    {{-- <th>Image</th> --}}
                     <th>Name</th>
                     <th>Slug</th>
+                    <th>Products #</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Edit</th>
@@ -46,23 +51,25 @@
                 </tr>
             </thead>
             <tbody class="all_data">
-  
+
                 @forelse ($categories as $i => $category)
-                {{-- @foreach ($categories as $i => $category) --}}
+                    {{-- @foreach ($categories as $i => $category) --}}
                     <tr>
                         <td>{{ $i + 1 }} |
                             <p class="badge badge-danger text-bold ml-1"> {{ $category->id }}</p> |
-                            <p class="badge badge-info text-bold ml-1">{{ $category->parent_name ?? 'Null' }}</p>
+                            <p class="badge badge-info text-bold ml-1">{{ $category->parent->name ?? 'Null' }}</p>
                         </td>
 
 
-                        <td>
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="" height="60">
-                        </td>
+                        {{-- <td>
+                            <img src="{{ asset('storage/' . $category->image) ?? $category->image }}" alt=""
+                                height="60">
+                        </td> --}}
                         <td><a
                                 href="{{ route('dashboard.categories.show', ['category' => $category->id]) }}">{{ $category->name }}</a>
                         </td>
                         <td>{{ $category->slug }}</td>
+                        <td><p class="badge badge-secondary text-bold ">{{ $category->products_count ?? '' }}</p></td>
                         <td>
                             @if ($category->status == 'active')
                                 <p class="badge badge-success text-bold ml-1"> Active </p>
@@ -70,7 +77,7 @@
                                 <p class="badge badge-danger text-bold ml-1"> Archived </p>
                             @endif
                         </td>
-                        <td>{{ $category->created_at }}</td>
+                        <td>{{ $category->created_at->diffForHumans() }}</td>
                         <td><a href="{{ route('dashboard.categories.edit', [$category->id]) }}"
                                 class="btn btn-outline-dark">Edit</a></td>
                         <td>
@@ -81,13 +88,13 @@
                             </form>
                         </td>
                     </tr>
-                    @empty
+                @empty
                     <tr>
                         <td colspan="7">
                             <h2 class="text-center">Category is Empty</h2>
                         </td>
                     </tr>
-                    @endforelse
+                @endforelse
 
 
 

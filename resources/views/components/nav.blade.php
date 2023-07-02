@@ -10,7 +10,7 @@
                             <i class="far fa-circle nav-icon"></i>
                             <p>{{ $item['title'] }}</p>
                             @isset($item['badge'])
-                        <span class="right badge badge-danger">{{ $item['badge'] }}</span>
+                        <span class="right badge badge-danger">{{ $item['badge']  }}</span>
                             @endisset
                         </a>
                     </li>
