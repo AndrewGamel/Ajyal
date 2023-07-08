@@ -10,14 +10,13 @@ class Profile extends Model
     use HasFactory;
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'first_name','last_name','birthday','gender','image','city','street_address','state','postal_code','country','locale'];
+        'first_name', 'last_name',
+        'birthday', 'gender',
+        'image', 'city', 'street_address',
+        'state', 'postal_code', 'country', 'locale'
+    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id", 'id');
+    }
 }
-/*
-
-            $table->enum(, ['male', 'female'])->nullable();
-            $table->string()->nullable();
-            $table->string()->nullable();
-            $table->string()->nullable();
-
-
- */

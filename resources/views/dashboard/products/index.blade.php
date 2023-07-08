@@ -66,7 +66,7 @@
                         <td>{{ $product->category->name ?? null }}</td>
 
                         @if (Auth::user()->id == 1)
-                            <td>{{ $product->store->id ?? '' }}</td>
+                            <td>{{ $product->store->name ?? '' }}</td>
                         @endif
 
                         <td>{{ $product->created_at->diffForHumans() }}</td>
