@@ -29,7 +29,7 @@ class CategoriesController extends Controller
 
         //$categories = $query->paginate(2);
         $categories = Category::with('parent')
-        /*leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+            /*leftjoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
             ->select([
                 'categories.*',
                 'parents.name as parent_name'
@@ -37,10 +37,11 @@ class CategoriesController extends Controller
             ->select('categories.*')
             //->selectRaw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count')
             ->addSelect(DB::raw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count'))
-            */->withCount(['products as products_count'=> function ($query)
-            {
-               //$query->where('status','active');
-            }])
+            */
+            ->withCount([
+                'products as products_count' => function ($query) { //$query->where('status','active');
+                }
+            ])
             ->filter($request->query())
             ->orderBy('categories.name')
             // ->onlyTrashed()
@@ -156,7 +157,7 @@ class CategoriesController extends Controller
     {
         $category->delete();
 
-      //  $this->reAutoIncrement('categories');
+        //  $this->reAutoIncrement('categories');
         return Redirect::route('dashboard.categories.index')
             ->with('success', 'Category Deleted!');
     }
@@ -213,9 +214,9 @@ class CategoriesController extends Controller
     public function trash(Request $request)
     {
         $categories = Category::onlyTrashed()->filter($request->query())->orderBy('categories.name')->paginate();
-        return view('dashboard.categories.trash',compact('categories'));
+        return view('dashboard.categories.trash', compact('categories'));
     }
-    public function restore(Request $request,$id)
+    public function restore(Request $request, $id)
     {
         $category = Category::onlyTrashed()->findOrFail($id);
         $category->restore();
