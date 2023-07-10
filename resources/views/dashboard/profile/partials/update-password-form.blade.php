@@ -20,16 +20,43 @@
 
         <div class="form-group">
         <x-input-label for="first_name" :value="__('First Name')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
-        <x-form.input label="Category Name" class="form-control-lg" role="input" name="name" :value="$user->name" />
+        <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('name', $user->profile->first_name)" required autofocus autocomplete="first_name" />
+        <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
 
-    </div>
+        <div class="form-group">
+        <x-input-label for="last_name" :value="__('Last Name')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+        <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('name', $user->last_name)" required autofocus autocomplete="last_name" />
+        <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
 
+        <div class="form-group">
+            <x-input-label for="first_name" :value="__('First Name')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+            <x-text-input id="first_name" name="first_name" type="date" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="first_name" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
 
+        <div class="form-group">
+            <x-input-label for="gender" :value="__('Gender')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+            <x-radio id="gender" name="gender" type="radio" class="mt-1 " :value="old('name', $user->profile->gender)" :options="['male' => 'Male', 'female' => 'Female']"  :checked="$user->profile->gender" required autofocus autocomplete="gender" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
 
-
-
-
-
+        <div class="form-group">
+            <x-input-label for="street_address" :value="__('Street Address')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+            <x-text-input id="street_address" name="street_address" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="street_address" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+        <div class="form-group">
+            <x-input-label for="first_name" :value="__('First Name')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="first_name" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+        <div class="form-group">
+            <x-input-label for="first_name" :value="__('First Name')"  class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="first_name" />
+            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

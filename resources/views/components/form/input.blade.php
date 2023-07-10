@@ -8,7 +8,7 @@
 
 <input type="{{ $type }}" name="{{ $name }}"  value="{{ old($name, $value) }}"
 {{ $attributes->class([
-    'form-control dark:border-gray-700',
+    'form-control ',
     'is-invalid' => $errors->has($name)
 ]) }}>
 <x-form.validation-feedback :name="$name" />
