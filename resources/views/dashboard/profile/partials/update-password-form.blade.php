@@ -8,28 +8,18 @@
             {{ __('Ensure your account is using a long, random password to stay secure.') }}
         </p>
     </header>
-    {{--
 
-        'image',
-        '', 'country', ''
-    --}}
     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('put')
-        <div class="profile-pic" style="
-        color: transparent;
-        transition: all 0.3s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        transition: all 0.3s ease;">
-            <label class="-label" for="file">
+
+        <div class="profile-pic">
+            <label class="-label"  for="file">
               <span class="glyphicon glyphicon-camera"></span>
               <span>Change Image</span>
             </label>
-            <input id="file" type="file" onchange="loadFile(event)" style="display: none;"/>
-            <img src="https://cdn.pixabay.com/photo/2017/08/06/21/01/louvre-2596278_960_720.jpg" id="output" width="200" />
+            <input id="file" type="file" name="image" accept="image/*" onchange="loadFile(event)" />
+            <img src="{{ $user->profile->image ??  asset('assets/dashboard/dist/img/user1-128x128.jpg') }}" id="output" width="200" />
           </div>
         {{-- First Name --}}
         <div class="form-group">

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locales;
 
@@ -43,5 +44,7 @@ class ProfileController extends Controller
             // Profile::create($request->all());
         }
         */
+        return redirect()->route('dashboard.profile.edit')
+        ->with('success', 'Category Created!');
     }
 }
