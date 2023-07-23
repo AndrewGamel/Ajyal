@@ -61,7 +61,8 @@ class ProductsController extends Controller
                 ->with('info', 'product Not Found!');
         }
         $categories = Category::all();
-        return view('dashboard.products.edit',compact('categories','product'));
+        $tags = $product->tags;
+        return view('dashboard.products.edit',compact('categories','product','tags'));
     }
 
     /**
@@ -82,6 +83,7 @@ class ProductsController extends Controller
 
         $product->update($data);
 $tags = explode(',',$request->post('tags'));
+$tag_ids = [];
 foreach ($tags as $t_name) {
     $slug = Str::slug($t_name);
     $tag = Tag::where('slug',$slug)->first();
@@ -90,8 +92,11 @@ foreach ($tags as $t_name) {
             'name' => $t_name,
             'slug' => $slug
         ]);
+
     }
+    $tag_ids[] = $tag->id;
 }
+$product->tags()->sync($tag_ids);
         if ($old_image && isset($new_image)) {
             Storage::disk('public')->delete($old_image);
         }

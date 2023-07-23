@@ -46,7 +46,7 @@
 
 
 <label for="">tags</label>
-<x-form.input name="compare_price" :value="$product->compare_price" />
+<x-form.input name="tags" :value="$tags" />
 
 
 
