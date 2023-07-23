@@ -1,7 +1,7 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
+            {{ __('Update Or Creating Profile') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -9,17 +9,22 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('dashboard.profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
-        @method('put')
-
+        @method('patch')
+        <form  method="post" enctype="multipart/form-data">
+            @csrf
+            @method('patch')
         <div class="profile-pic">
             <label class="-label"  for="file">
               <span class="glyphicon glyphicon-camera"></span>
               <span>Change Image</span>
             </label>
             <input id="file" type="file" name="image" accept="image/*" onchange="loadFile(event)" />
-            <img src="{{ $user->profile->image ??  asset('assets/dashboard/dist/img/user1-128x128.jpg') }}" id="output" width="200" />
+
+            <img src="{{ asset( Auth::user()->profile_photo_url )   }}" id="output" width="200" />
+           
+
           </div>
         {{-- First Name --}}
         <div class="form-group">
@@ -50,7 +55,7 @@
             <x-input-label for="gender" :value="__('Gender')"
                 class="block font-medium text-sm text-gray-700 dark:text-gray-300" />
             <x-radio id="gender" name="gender" type="radio" class="mt-1 " :value="old('name', $user->profile->gender)" :options="['male' => 'Male', 'female' => 'Female']"
-                :checked="$user->profile->gender" required autofocus autocomplete="gender" />
+                :checked="$user->profile->gender" autofocus autocomplete="gender" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
         {{-- Street Address --}}
@@ -104,7 +109,7 @@
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
-            @if (session('status') === 'password-updated')
+            @if (session('success') === 'Profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
             @endif
@@ -117,14 +122,3 @@
     image.src = URL.createObjectURL(event.target.files[0]);
   };
 </script>
-
-
-
-
-{{-- <x-form.select id="parent_id" name="parent_id" label="Parent" :options="$parents->pluck('name', 'id')"  /> --}}
-    {{-- <select name="parent_id" class="form-control form-select">
-        <option value="">Primary Category</option>
-        @foreach ($parents as $parent)
-            <option value="{{ $parent->id }}" @selected(old('parent_id', $category->parent_id) == $parent->id)>{{ $parent->name }}</option>
-        @endforeach
-    </select> --}}

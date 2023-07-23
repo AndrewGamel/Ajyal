@@ -18,7 +18,7 @@ class ProductScope implements Scope
     {
         $user = Auth::user();
         # for Admin ...
-        if ($user->store_id == 1) {
+        if ($user->store_id == 2) {
             $builder->where('store_id', '!=', $user->store_id)
                     ->orwhere('store_id', NULL);
         } elseif ($user->store_id) {

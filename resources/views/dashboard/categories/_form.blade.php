@@ -47,3 +47,7 @@
 <div class="form-group ">
     <button type="submit" class="btn btn-primary">{{ $button_label ?? 'Save' }}</button>
 </div>
+@if (session('success') === 'Profile-updated')
+<p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+    class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
+@endif

@@ -169,15 +169,7 @@ class CategoriesController extends Controller
         DB::statement(("ALTER TABLE `$table` AUTO_INCREMENT = 1;"));
     }
 
-    public function uploadImage(Request $request)
-    {
-        if (!$request->hasFile('image')) {
-            return;
-        }
-        $file = $request->file('image');
-        $path = $file->store('uploads', ['disk' => 'public']);
-        return $path;
-    }
+
     function search(Request $request)
     {
         if ($request->ajax()) {
@@ -193,16 +185,11 @@ class CategoriesController extends Controller
                            <td>' . $i + 1 . ' |
                                     <p class="badge badge-danger text-bold ml-1"> ' . $row->id . '</p> |
                             </td>
-
-
                             <td><a href="' . route('dashboard.categories.show', ['category' => $row->id]) . '">' . $row->name . '</a></td>
-
                             </tr>
                         ';
                 }
                 $output .= '
-
-
             </div>';
             } else {
                 $output .= 'no Result';
@@ -230,5 +217,19 @@ class CategoriesController extends Controller
             Storage::disk('public')->delete($category->image);
         }
         return redirect()->route('dashboard.categories.trash')->with('danger', 'Category Deleted For Ever!');
+    }
+
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+
+        $file = $request->file('image'); // UploadedFile Object
+
+        $path = $file->store('uploads', [
+            'disk' => 'public'
+        ]);
+        return $path;
     }
 }

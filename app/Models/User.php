@@ -43,6 +43,17 @@ class User extends Authenticatable
     ];
     public function profile()
     {
-        return $this->hasOne(Profile::class, 'user_id', 'id')->withDefault();
+        return $this->hasOne(Profile::class, 'user_id', 'id')
+                    ->withDefault();
+    }
+
+
+
+   public function getProfilePhotoUrlAttribute()
+    {
+        if ($this->profile->image) {
+           return asset('/storage/uploads/'.$this->profile->image);
+        }
+        return asset('images/default-photo.jpg');
     }
 }

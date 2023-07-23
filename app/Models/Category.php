@@ -43,7 +43,7 @@ class Category extends Model
                 new Filter(), 'filter:Androw,Gamel,isis',
             ],
             'parent_id' => 'nullable|integer|exists:categories,id',
-            'image' => 'mimes:png,jpg|max:1048576|dimensions:min_width=100,max_width= 1000',
+            'image' => 'mimes:png,jpg|max:1048576|dimensions:min_width=100,max_width= 6000',
             'status' => 'required|in:active,archived'
         ];
     }

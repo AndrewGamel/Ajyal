@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locales;
 
@@ -17,9 +17,10 @@ class ProfileController extends Controller
         $user = Auth::user();
         $countries = Countries::getNames();
         $locales = Locales::getNames();
-
-        return view('dashboard.profile.edit',
-         compact('user','countries','locales'));
+        return view(
+            'dashboard.profile.edit',
+            compact('user', 'countries', 'locales')
+        );
     }
     public function update(Request $request)
     {
@@ -34,8 +35,41 @@ class ProfileController extends Controller
             'locale' => ['string', 'size:2']
         ]);
         $user = $request->user();
-        $user->profile->fill($request->all())->save();
-        /* $profile =  $user->profile;
+        $old_image = $user->profile->image;
+        $data = $request->except('image');
+        $new_image = $this->uploadImage($request);
+
+
+        $new_image = ($request);
+        if ($new_image) {
+            $data['image'] = $new_image;
+        }
+
+        $user->profile->fill([],$data)->save();
+
+        if ($old_image && isset($request->image)) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+        return redirect()->route('dashboard.profile.edit')
+            ->with('success', 'Profile Updated!');
+    }
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+
+        $file = $request->file('image'); // UploadedFile Object
+
+        $path = $file->store('uploads', [
+            'disk' => 'public'
+        ]);
+        return $path;
+    }
+
+}
+/* $profile =  $user->profile;
         if ($profile->user_id) {
             $profile->update($request->all());
         } else {
@@ -44,7 +78,3 @@ class ProfileController extends Controller
             // Profile::create($request->all());
         }
         */
-        return redirect()->route('dashboard.profile.edit')
-        ->with('success', 'Category Created!');
-    }
-}
