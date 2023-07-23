@@ -22,8 +22,8 @@
             </label>
             <input id="file" type="file" name="image" accept="image/*" onchange="loadFile(event)" />
 
-            <img src="{{ asset( Auth::user()->profile_photo_url )   }}" id="output" width="200" />
-           
+            <img src="{{ asset( Auth::user()->profile_photo_url ) }}" id="output" width="200" />
+
 
           </div>
         {{-- First Name --}}

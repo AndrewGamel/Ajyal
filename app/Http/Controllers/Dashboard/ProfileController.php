@@ -30,24 +30,26 @@ class ProfileController extends Controller
             'last_name' => ['required', 'string', 'min:3', 'max:10'],
             'birthday' => ['nullable', 'date', 'before:today'],
             'gender' => ['in:male,female'],
-            'image' => 'nullable|mimes:png,jpg|max:1048576|dimensions:min_width=100,max_width= 1000',
+            'image' => 'nullable',
+
+            // 'image' => 'nullable|mimes:png,jpg|max:1048576|dimensions:min_width=100,max_width= 1000',
             'country' => ['required', 'string', 'size:2'],
             'locale' => ['string', 'size:2']
         ]);
         $user = $request->user();
-        $old_image = $user->profile->image;
+        $old_image = $user->profile_photo_url;
         $data = $request->except('image');
         $new_image = $this->uploadImage($request);
 
+// $request->merge(['image'=>$new_image]);
 
-        $new_image = ($request);
         if ($new_image) {
             $data['image'] = $new_image;
         }
 
-        $user->profile->fill([],$data)->save();
+        $user->profile->fill($data)->save();
 
-        if ($old_image && isset($request->image)) {
+ if ($old_image && isset($new_image)) {
             Storage::disk('public')->delete($old_image);
         }
 
