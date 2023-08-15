@@ -11,7 +11,9 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('assets/dashboard/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Theme style -->
+
   <link rel="stylesheet" href="{{ asset('assets/dashboard/dist/css/adminlte.min.css') }}">
+  @stack('styles')
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed') }}">
 <div class="wrapper">
@@ -77,7 +79,9 @@
 <!-- ./wrapper -->
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
-<script src="{{ asset('assets/dashboard/plugins/jquery/jquery.min.js') }}"></script>
+
+
+<script src="{{ asset('assets/dashboard/plugins/jquery/jquery.min.js') }}">
 <!-- Bootstrap -->
 <script src="{{ asset('assets/dashboard/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- overlayScrollbars -->
@@ -85,19 +89,12 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/dashboard/dist/js/adminlte.min.js') }}"></script>
 
-<!-- PAGE PLUGINS -->
-<!-- jQuery Mapael -->
-{{-- <script src="{{ asset('assets/dashboard/plugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/raphael/raphael.min.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
-<script src="{{ asset('assets/dashboard/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script> --}}
-<!-- ChartJS -->
-{{-- <script src="{{ asset('assets/dashboard/plugins/chart.js/Chart.min.js') }}"></script> --}}
 
-<!-- AdminLTE for demo purposes -->
-{{-- <script src="{{ asset('assets/dashboard/dist/js/demo.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('assets/dashboard/dist/js/pages/dashboard2.js') }}"></script> --}}
+
+
+
+
+
 <script>
      $(document).ready(function(){
     $('#search').on('keyup',function (e) {
@@ -126,5 +123,8 @@
     });
 });
 </script>
+@stack('scripts')
+
+
 </body>
 </html>
